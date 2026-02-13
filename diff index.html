@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Don't Break My Heart 💖</title>
+
+<style>
+body {
+    margin: 0;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+    overflow: hidden;
+    color: white;
+}
+
+h1 {
+    margin-top: 20px;
+}
+
+#score {
+    font-size: 22px;
+}
+
+.emoji {
+    position: absolute;
+    font-size: 50px;
+    cursor: pointer;
+}
+
+#message {
+    position: absolute;
+    top: 40%;
+    width: 100%;
+    font-size: 22px;
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Don’t Tap the Red Heart 💔</h1>
+<div id="score">Score: 0</div>
+<div id="message"></div>
+<audio id="bgMusic" loop>
+  <source src="my baby.mp3" type="audio/mp3">
+</audio>
+
+
+<script>
+let musicStarted = false;
+
+document.addEventListener("click", function() {
+    if (!musicStarted) {
+        document.getElementById("bgMusic").play();
+        musicStarted = true;
+    }
+});
+
+let score = 0;
+let gameOver = false;
+
+function spawnEmoji() {
+    if (gameOver) return;
+
+    let emoji = document.createElement("div");
+    emoji.className = "emoji";
+
+    let isBad = Math.random() < 0.3;
+
+    emoji.innerHTML = isBad ? "💔" : "💖";
+    emoji.style.left = Math.random() * (window.innerWidth - 50) + "px";
+    emoji.style.top = Math.random() * (window.innerHeight - 100) + "px";
+
+    emoji.onclick = function() {
+        if (isBad) {
+            gameOver = true;
+            document.getElementById("message").style.display = "block";
+            document.getElementById("message").innerHTML =
+            "You broke my heart 😭 ... just kidding. I still love you ❤️";
+        } else {
+            score++;
+            document.getElementById("score").innerText = "Score: " + score;
+            emoji.remove();
+
+            if (score >= 10) {
+                gameOver = true;
+                document.getElementById("message").style.display = "block";
+                document.getElementById("message").innerHTML =
+                "You protected my heart 🥰 That means you're my forever ❤️";
+            }
+        }
+    };
+
+    document.body.appendChild(emoji);
+
+    setTimeout(() => {
+        emoji.remove();
+    }, 2000);
+}
+
+setInterval(spawnEmoji, 900);
+</script>
+
+</body>
+</html>
+
